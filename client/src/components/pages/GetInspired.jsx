@@ -1,5 +1,6 @@
 //page8
 
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import WobbedrobeItemCard from '../WobbedrobeItemCard';
@@ -176,4 +177,16 @@ export default function GetInspired() {
       </div>
     );
   }
+=======
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+export default function getInspired() {
+  const page = useSelector((state) => state.status.page);
+  return (
+    <div>
+      <h3>getInspired</h3>
+    </div>
+  );
+>>>>>>> 24c952223e5cd3851e506052e6b30784076b9371
 }

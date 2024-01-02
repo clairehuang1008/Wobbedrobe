@@ -1,7 +1,6 @@
 const express = require('express');
-const cors = require('cors');
 const path = require('path');
-const Controller = require('./controllers/wobbedrobeController.js');
+const Controller = require('./controllers/WobbedrobeController.js');
 const userController = require('./controllers/userController.js');
 const cookieController = require('./controllers/cookieController.js');
 const sessionController = require('./controllers/sessionController.js');
@@ -10,26 +9,32 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
 
-const userRouter = require('./routes/userRouter.js');
-const ootdRouter = require('./routes/ootdRouter.js');
-const wobbedrobeItemsRouter = require('./routes/wobbedrobeItemsRouter.js');
+app.use(express.json());
 
-app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded());
+app.post(
+  '/user/signup',
+  userController.createUser,
+  cookieController.setSSIDCookie,
+  sessionController.startSession,
+  (req, res) => {
+    return res.status(200).json({});
+  }
+);
 
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.use('/downloadedImages', express.static('downloadedImages'));
+app.get(
+  '/user/login',
+  userController.verifyUser,
+  cookieController.setSSIDCookie,
+  sessionController.isLoggedIn,
+  (req, res) => {
+    return res.status(200).json({});
+  }
+);
 
-app.use('/user', userRouter);
-app.use('/wobbedrobe', wobbedrobeItemsRouter);
-app.use('/ootd', ootdRouter);
-
-app.get('*', (req, res) => {
-  console.log('GET * route hit');
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+app.delete('user/delete', (req, res) => {
+  return res.status(200).json({});
 });
 
 // Unknown route handler
